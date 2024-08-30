@@ -9,20 +9,20 @@ body {
 
 /* Headings */
 h2 {
-    color: #333;
+    color: #1F1D2B;
 }
 
 /* Navbar */
 .custom-navbar {
-    background-color: #6BAED6; /* 네비게이션 바의 배경색 */
+    background-color: #1F1D2B; /* 네비게이션 바의 배경색 */
 }
 
 .navbar-brand, .nav-link, .dropdown-toggle {
-    color: #ffffff !important; /* 텍스트를 흰색으로 설정 */
+    color: #ffffff; /* 텍스트를 흰색으로 설정 */
 }
 
 .navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.5); /* 토글 버튼 테두리 색상 */
+    border-color: #ffffff; /* 토글 버튼 테두리 색상 */
 }
 
 .navbar-toggler-icon {
@@ -47,6 +47,46 @@ h2 {
     color: #000000 !important; /* 드롭다운 메뉴 아이템의 색상 */
 }
 
+/* 드롭다운 버튼의 배경색과 글자색 변경 */
+.dropdown-center .btn-secondary {
+    background-color: #242730; /* 배경색을 변경 (예: SSAFIT의 메인 색상) */
+    color: #ffffff; /* 글자색을 흰색으로 변경 */
+    border-color: #242730; /* 버튼의 테두리 색상도 변경 */
+}
+
+/* 드롭다운 버튼 호버 시 배경색과 글자색 변경 */
+.dropdown-center .btn-secondary:hover {
+    background-color: #4f566b; /* 호버 시 배경색 변경 */
+    color: #ffffff; /* 호버 시 글자색을 흰색으로 유지 */
+    border-color: #4f566b; /* 호버 시 테두리 색상도 변경 */
+}
+
+/* 드롭다운 메뉴 아이템의 배경색과 글자색 변경 */
+.dropdown-menu {
+    background-color: #f8f9fa; /* 드롭다운 메뉴 배경색 변경 */
+}
+
+.dropdown-menu .dropdown-item {
+    color: #333333; /* 드롭다운 메뉴 아이템의 글자색 변경 */
+}
+
+/* 드롭다운 메뉴 아이템 호버 시 배경색과 글자색 변경 */
+.dropdown-menu .dropdown-item:hover {
+    background-color: #242730; /* 호버 시 배경색 변경 */
+    color: #ffffff; /* 호버 시 글자색을 흰색으로 변경 */
+}
+
+
+/* 운동 부위 선택 드롭다운과 추천 영상 사이의 여백 추가 */
+#part-videos {
+    margin-top: 20px; /* 추천 영상 위에 20px의 여백 추가 */
+}
+
+.dropdown-center {
+    margin-bottom: 20px; /* 드롭다운 아래에 20px의 여백 추가 */
+}
+
+
 /* Card Styles */
 /* 스타일 추가 */
 .card {
@@ -69,7 +109,7 @@ h2 {
 .card-title {
     font-size: 0.9rem;
     font-weight: bold;
-    color: #000;
+    color: #1F1D2B;
     margin-top: 0.5rem;
 }
 
@@ -83,7 +123,7 @@ h2 {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #1F1D2B;
     color: #fff;
     padding: 2px 5px;
     border-radius: 3px;
@@ -92,166 +132,17 @@ h2 {
 
 
 /* Footer */
-.footer {
-    background-color: #f8f9fa;
-    padding: 10px 0;
+/* Footer styles */
+/* Footer styles */
+footer {
+    background-color: #1F1D2B; /* 푸터 배경색 */
+    color: #ffffff; /* 푸터 텍스트 색상 */
 }
 
-.footer p {
-    margin: 0;
+footer .footer-link {
+    color: #ffffff; /* 링크 색상 흰색 */
+    margin: 0 15px; /* 링크 간 간격 조정 */
+    text-decoration: none; /* 기본 밑줄 제거 */
 }
 
-/* 여기서부터 add_review, review_management에 적용 */
-/* styles.css */
 
-
-.container {
-    width: 80%;
-    margin: auto;
-    padding: 20px;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.header h2 {
-    margin: 0;
-}
-
-.video-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 2em;
-}
-
-.video-container iframe {
-    width: 100%;
-    max-width: 600px;
-    height: 350px;
-}
-
-.review-section {
-    margin-top: 20px;
-}
-
-.review-section button {
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: #1F1D2B;
-    color: white;
-}
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 10px 5px;
-    font-size: 16px;
-    color: white;
-    background-color: #1F1D2B;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-}
-
-th {
-    background-color: #f4f4f4;
-}
-
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.pagination button {
-    padding: 5px 10px;
-    margin: 0 2px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* Modal styles */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; 
-    z-index: 1; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0, 0, 0, 0.4); 
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; 
-    padding: 20px;
-    border: 1px solid #888;
-    width: 400px; 
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-}
-
-.modal-header, .modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-}
-
-.modal-header h2 {
-    margin: 0;
-}
-
-.modal-footer button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.modal-footer .submit-btn {
-    background-color: #007bff;
-    color: white;
-}
-
-.modal-footer .cancel-btn {
-    background-color: #f44336;
-    color: white;
-}
-
-.modal-body {
-    margin-top: 10px;
-}
-
-.modal-body input, .modal-body textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}

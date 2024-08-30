@@ -1,47 +1,62 @@
 document.addEventListener("DOMContentLoaded", function() {
-    fetch('../data/videos.json') // 경로를 수정합니다.
+    fetch('../assets/data/videos.json')
         .then(response => response.json())
         .then(data => {
-            const videoList = document.getElementById('video-list');
             const partVideos = document.getElementById('part-videos');
-            const partButtons = document.querySelectorAll('[data-part]');
+            const partDropdownItems = document.querySelectorAll('.dropdown-item');
 
-            // 최근 인기 영상 목록 생성
-            let chunkSize = 4; // 한 슬라이드에 표시할 영상 개수
-            for (let i = 0; i < data.length; i += chunkSize) {
-                const chunk = data.slice(i, i + chunkSize);
-                const carouselItem = document.createElement('div');
-                carouselItem.classList.add('carousel-item');
-                if (i === 0) {
-                    carouselItem.classList.add('active');
-                }
+            // 초기 로드 시 기본 부위를 "전신"으로 설정하여 영상 표시
+            updateVideos('전신');
 
-                const rowDiv = document.createElement('div');
-                rowDiv.classList.add('row');
-
-                chunk.forEach(video => {
-                    const videoCard = createVideoCard(video);
-                    rowDiv.appendChild(videoCard);
-                });
-
-                carouselItem.appendChild(rowDiv);
-                videoList.appendChild(carouselItem);
-            }
-
-            // 운동 부위 버튼 클릭 시 해당 부위의 영상 목록 생성
-            partButtons.forEach(button => {
-                button.addEventListener('click', function() {
+            // 드롭다운 아이템 클릭 시 해당 부위의 영상 목록 업데이트
+            partDropdownItems.forEach(item => {
+                item.addEventListener('click', function() {
                     const part = this.getAttribute('data-part');
-                    partVideos.innerHTML = ''; // 기존의 영상을 초기화
-                    const filteredVideos = data.filter(video => video.part === part);
-                    filteredVideos.forEach(video => {
-                        const videoCard = createPartVideoCard(video);
-                        partVideos.appendChild(videoCard);
-                    });
+                    updateVideos(part);
+
+                    // 버튼 텍스트를 선택한 부위로 변경
+                    const partSelectButton = document.getElementById('partSelectButton');
+                    partSelectButton.textContent = `운동 부위: ${part}`;
                 });
             });
+
+            // 운동 부위에 맞는 영상을 업데이트하는 함수
+            function updateVideos(part) {
+                partVideos.innerHTML = ''; // 기존의 영상 초기화
+                const filteredVideos = data.filter(video => video.part === part);
+                filteredVideos.forEach(video => {
+                    const videoCard = createPartVideoCard(video);
+                    partVideos.appendChild(videoCard);
+                });
+            }
+
+            // 운동 부위별 영상 카드 생성 함수
+            function createPartVideoCard(video) {
+                const colDiv = document.createElement('div');
+                colDiv.classList.add('col-md-4', 'mb-4');
+
+                const thumbnailUrl = getThumbnailUrl(video.id, 'mqdefault');
+
+                colDiv.innerHTML = `
+                    <div class="card h-100">
+                        <img src="${thumbnailUrl}" class="card-img-top" alt="${video.title}">
+                        <div class="card-body">
+                            <h5 class="card-title">${video.title}</h5>
+                            <p class="card-text">채널: ${video.channelName}</p>
+                        </div>
+                    </div>
+                `;
+
+                return colDiv;
+            }
+
+            // 유튜브 썸네일 URL 생성 함수
+            function getThumbnailUrl(videoId, quality = 'mqdefault') {
+                return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
+            }
         })
         .catch(error => console.error('Error loading video data:', error));
+});
 
     // 유튜브 썸네일 URL 생성 함수
     function getThumbnailUrl(videoId, quality = 'mqdefault') {
