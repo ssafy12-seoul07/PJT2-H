@@ -3,26 +3,57 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             const partVideos = document.getElementById('part-videos');
-            const partDropdownItems = document.querySelectorAll('.dropdown-item');
+            const partSelect = document.getElementById('partSelect');
+            const carouselItems = document.getElementById('carouselItems');
+            let isActive = true;
 
-            // 초기 로드 시 기본 부위를 "전신"으로 설정하여 영상 표시
-            updateVideos('전신');
+            // 최근 가장 많이 본 영상 캐러셀 설정
+            for (let i = 0; i < data.length; i += 2) {
+                const item = document.createElement('div');
+                item.className = `carousel-item ${isActive ? 'active' : ''}`;
+                isActive = false;
 
-            // 드롭다운 아이템 클릭 시 해당 부위의 영상 목록 업데이트
-            partDropdownItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const part = this.getAttribute('data-part');
-                    updateVideos(part);
+                const row = document.createElement('div');
+                row.className = 'row';
 
-                    // 버튼 텍스트를 선택한 부위로 변경
-                    const partSelectButton = document.getElementById('partSelectButton');
-                    partSelectButton.textContent = `운동 부위: ${part}`;
-                });
+                for (let j = i; j < i + 2 && j < data.length; j++) {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-6';
+
+                    const card = document.createElement('div');
+                    card.className = 'card';
+
+                    const link = document.createElement('a');
+                    link.href = data[j].url;
+                    link.target = '_blank'; // 새로운 탭에서 열기
+                    
+                    const img = document.createElement('img');
+                    img.src = `https://img.youtube.com/vi/${data[j].id}/mqdefault.jpg`;  // 유튜브 썸네일 URL
+                    img.className = 'card-img-top';
+                    img.alt = data[j].title;
+
+                    link.appendChild(img);
+                    card.appendChild(link);
+
+                    col.appendChild(card);
+                    row.appendChild(col);
+                }
+
+                item.appendChild(row);
+                carouselItems.appendChild(item);
+            }
+
+            // 기본값으로 "전신" 부위의 영상 표시
+            updateRecommendedVideos(data, '전신');
+
+            // 운동 부위 선택 시 해당 부위의 영상 목록 생성
+            partSelect.addEventListener('change', function() {
+                const part = this.value;
+                updateRecommendedVideos(data, part);
             });
 
-            // 운동 부위에 맞는 영상을 업데이트하는 함수
-            function updateVideos(part) {
-                partVideos.innerHTML = ''; // 기존의 영상 초기화
+            function updateRecommendedVideos(data, part) {
+                partVideos.innerHTML = ''; // 기존의 영상을 초기화
                 const filteredVideos = data.filter(video => video.part === part);
                 filteredVideos.forEach(video => {
                     const videoCard = createPartVideoCard(video);
@@ -33,9 +64,9 @@ document.addEventListener("DOMContentLoaded", function() {
             // 운동 부위별 영상 카드 생성 함수
             function createPartVideoCard(video) {
                 const colDiv = document.createElement('div');
-                colDiv.classList.add('col-md-4', 'mb-4');
+                colDiv.classList.add('col-md-3', 'mb-4');
 
-                const thumbnailUrl = getThumbnailUrl(video.id, 'mqdefault');
+                const thumbnailUrl = getThumbnailUrl(video.id, 'maxresdefault');
 
                 colDiv.innerHTML = `
                     <div class="card h-100">
@@ -51,12 +82,14 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             // 유튜브 썸네일 URL 생성 함수
-            function getThumbnailUrl(videoId, quality = 'mqdefault') {
+            function getThumbnailUrl(videoId, quality = 'maxresdefault') {
                 return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
             }
         })
         .catch(error => console.error('Error loading video data:', error));
 });
+<<<<<<< HEAD
+=======
 
     // 유튜브 썸네일 URL 생성 함수
     function getThumbnailUrl(videoId, quality = 'mqdefault') {
@@ -221,3 +254,4 @@ app.put('/reviews/:index', (req, res) => {
 app.listen(3000, () => {
     console.log('서버가 http://localhost:3000 에서 실행 중입니다.');
 });
+>>>>>>> b9222d275a8d5fc7afcb88949279c76926b5f6ce

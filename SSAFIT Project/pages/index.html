@@ -70,23 +70,22 @@
             </div>
         </div>
 
-        <div class="dropdown-center mt-4">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="partSelectButton" data-bs-toggle="dropdown" aria-expanded="false">
-    운동 부위 선택
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="partSelectButton">
-    <li><a class="dropdown-item" href="#" data-part="전신">전신</a></li>
-    <li><a class="dropdown-item" href="#" data-part="상체">상체</a></li>
-    <li><a class="dropdown-item" href="#" data-part="하체">하체</a></li>
-    <li><a class="dropdown-item" href="#" data-part="복부">복부</a></li>
-  </ul>
-</div>
-          
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3>운동 부위 선택</h3>
+                <select class="form-select" id="partSelect" aria-label="운동 부위 선택">
+                    <option value="전신" selected>전신</option>
+                    <option value="상체">상체</option>
+                    <option value="하체">하체</option>
+                    <option value="복부">복부</option>
+                </select>
+            </div>
+        </div>
 
         <div class="row" id="recommendedVideos">
             <div class="col-12">
-                <h2>추천 영상</h2>
-                <div class="row" id="recommendedVideos">
+                <h3>추천 영상</h3>
+                <div class="row" id="part-videos">
                     <!-- 추천 영상이 동적으로 표시될 영역 -->
                 </div>
             </div>
@@ -114,108 +113,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // JSON 파일을 가져오기
-            fetch('../assets/data/videos.json')
-                .then(response => response.json())
-                .then(data => {
-                    // 최근 많이 본 영상 캐러셀 설정
-                    const carouselItems = document.getElementById('carouselItems');
-                    let isActive = true;
-                    for (let i = 0; i < data.length; i += 2) {
-                        const item = document.createElement('div');
-                        item.className = `carousel-item ${isActive ? 'active' : ''}`;
-                        isActive = false;
-
-                        const row = document.createElement('div');
-                        row.className = 'row';
-
-                        for (let j = i; j < i + 2 && j < data.length; j++) {
-                            const col = document.createElement('div');
-                            col.className = 'col-md-6';
-
-                            const card = document.createElement('div');
-                            card.className = 'card';
-
-                            const link = document.createElement('a');
-                            link.href = data[j].url;
-                            link.target = '_blank'; // 새로운 탭에서 열기
-                            
-                            const img = document.createElement('img');
-                            img.src = `https://img.youtube.com/vi/${data[j].id}/mqdefault.jpg`;  // 유튜브 썸네일 URL
-                            img.className = 'card-img-top';
-                            img.alt = data[j].title;
-
-                            link.appendChild(img);
-                            card.appendChild(link);
-
-                            col.appendChild(card);
-                            row.appendChild(col);
-                        }
-
-                        item.appendChild(row);
-                        carouselItems.appendChild(item);
-                    }
-
-                    // 운동 부위 선택에 따라 추천 영상을 필터링하여 표시
-                    const partSelect = document.getElementById('partSelect');
-                    const recommendedVideos = document.getElementById('recommendedVideos');
-
-                    function updateRecommendedVideos(part) {
-                        recommendedVideos.innerHTML = ''; // 기존 추천 영상 초기화
-
-                        const filteredVideos = data.filter(video => video.part === part);
-
-                        filteredVideos.forEach(video => {
-                            const col = document.createElement('div');
-                            col.className = 'col-md-3';
-
-                            const card = document.createElement('div');
-                            card.className = 'card';
-
-                            const link = document.createElement('a');
-                            link.href = video.url;
-                            link.target = '_blank'; // 새로운 탭에서 열기
-                            
-                            const img = document.createElement('img');
-                            img.src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`; // 유튜브 썸네일 URL
-                            img.className = 'card-img-top';
-                            img.alt = video.title;
-
-                            const cardBody = document.createElement('div');
-                            cardBody.className = 'card-body';
-
-                            const cardTitle = document.createElement('h5');
-                            cardTitle.className = 'card-title';
-                            cardTitle.textContent = video.title;
-
-                            const cardText = document.createElement('p');
-                            cardText.className = 'card-text';
-                            cardText.textContent = `${video.channelName} - ${video.part}`;
-
-                            cardBody.appendChild(cardTitle);
-                            cardBody.appendChild(cardText);
-
-                            link.appendChild(img);
-                            card.appendChild(link);
-                            card.appendChild(cardBody);
-
-                            col.appendChild(card);
-                            recommendedVideos.appendChild(col);
-                        });
-                    }
-
-                    // 페이지 로드 시 기본 "전신" 선택에 따른 추천 영상 업데이트
-                    updateRecommendedVideos('전신');
-
-                    partSelect.addEventListener('change', function() {
-                        const selectedPart = partSelect.value;
-                        updateRecommendedVideos(selectedPart);
-                    });
-                })
-                .catch(error => console.error('Error loading JSON:', error));
-        });
-    </script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>
