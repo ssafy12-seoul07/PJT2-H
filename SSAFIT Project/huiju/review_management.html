@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 관리</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>리뷰 관리</h2>
+    </div>
+
+    <div class="review-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>날짜</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+            <tbody id="reviewManagementList">
+                <!-- Reviews will be inserted here dynamically with management options -->
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <button>&laquo;</button>
+            <button>1</button>
+            <button>&raquo;</button>
+        </div>
+    </div>
+</div>
+
+<!-- 수정 모달 -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>리뷰 수정</h2>
+    </div>
+    <div class="modal-body">
+      <label for="editTitle">제목</label>
+      <input type="text" id="editTitle" name="editTitle">
+
+      <label for="editContent">내용</label>
+      <textarea id="editContent" name="editContent" rows="4"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="submit-btn" id="saveChanges">저장</button>
+      <button class="cancel-btn" id="closeEditModal">취소</button>
+    </div>
+  </div>
+</div>
+
+<script src="server.js" defer></script>
+
+</body>
+</html>
