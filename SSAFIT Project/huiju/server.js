@@ -1,72 +1,3 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">운동영상 리뷰</title>
-    <link rel="stylesheet" href="main.css">
-</head>
-<body>
-
-<div class="container">
-    <div class="header">
-        <h2 id="videoTitle">운동영상 리뷰</h2>
-    </div>
-
-    <div class="video-container">
-        <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
-        <select id="videoSelect">
-            <!-- 비디오 옵션이 여기서 동적으로 채워집니다 -->
-        </select>
-    </div>
-
-    <div class="review-section">
-        <button id="openModalBtn"class="btn">리뷰 작성</button>
-        <a href="review_management.html" class="btn">리뷰 관리</a>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>제목</th>
-                    <th>내용</th>
-                    <th>날짜</th>
-                    <th>비디오</th>
-                </tr>
-            </thead>
-            <tbody id="reviewList">
-                <!-- 리뷰 목록이 여기에 동적으로 채워집니다 -->
-            </tbody>
-        </table>
-
-        <div class="pagination">
-            <button>&laquo;</button>
-            <button>1</button>
-            <button>&raquo;</button>
-        </div>
-    </div>
-</div>
-
-<!-- The Modal -->
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>리뷰 작성</h2>
-    </div>
-    <div class="modal-body">
-      <label for="title">제목</label>
-      <input type="text" id="title" name="title">
-
-      <label for="content">내용</label>
-      <textarea id="content" name="content" rows="4"></textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="submit-btn" id="submitReview">등록</button>
-      <button class="cancel-btn" id="closeModalBtn">취소</button>
-    </div>
-  </div>
-</div>
-
-<script>
 // 서버에서 리뷰 데이터를 가져와서 테이블에 추가하는 함수
 async function loadReviews() {
     try {
@@ -193,7 +124,145 @@ window.onclick = function(event) {
 document.getElementById('openModalBtn').onclick = function() {
     document.getElementById('myModal').style.display = 'block';
 };
-</script>
 
-</body>
-</html>
+
+
+// 기존에 등록된 리뷰 데이터를 가져와서 테이블에 추가하는 코드
+const reviews = [
+    { title: "리뷰 1", content: "내용 1", date: "2024-08-30 12:00" },
+    { title: "리뷰 2", content: "내용 2", date: "2024-08-31 14:30" }
+];
+
+const reviewManagementList = document.getElementById('reviewManagementList');
+let currentEditingIndex = -1;
+
+function populateReviewTable() {
+    reviewManagementList.innerHTML = ''; // 기존 테이블 내용을 초기화
+
+    reviews.forEach((review, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${review.title}</td>
+            <td>${review.content}</td>
+            <td>${review.date}</td>
+            <td>
+                <button class="edit-btn" onclick="editReview(${index})">수정</button>
+                <button class="delete-btn" onclick="deleteReview(${index})">삭제</button>
+            </td>
+        `;
+        reviewManagementList.appendChild(row);
+    });
+}
+
+function editReview(index) {
+    currentEditingIndex = index;
+
+    // 모달을 통해 리뷰 수정
+    document.getElementById('editTitle').value = reviews[index].title;
+    document.getElementById('editContent').value = reviews[index].content;
+
+    // 모달 열기
+    document.getElementById('editModal').style.display = 'block';
+}
+
+function deleteReview(index) {
+    // 리뷰 삭제 로직 구현
+    reviews.splice(index, 1);
+    populateReviewTable();
+}
+
+document.getElementById('saveChanges').onclick = function() {
+    if (currentEditingIndex > -1) {
+        reviews[currentEditingIndex].title = document.getElementById('editTitle').value;
+        reviews[currentEditingIndex].content = document.getElementById('editContent').value;
+
+        // 테이블 갱신
+        populateReviewTable();
+
+        // 모달 닫기
+        document.getElementById('editModal').style.display = 'none';
+    }
+};
+
+document.getElementById('closeEditModal').onclick = function() {
+    // 모달 닫기
+    document.getElementById('editModal').style.display = 'none';
+};
+
+// 모달 외부 클릭 시 닫기
+window.onclick = function(event) {
+    if (event.target == document.getElementById('editModal')) {
+        document.getElementById('editModal').style.display = 'none';
+    }
+};
+
+// 초기 테이블 채우기
+populateReviewTable();
+
+//리뷰를 추가하는 함수
+function addReview(title, content, date) {
+    var reviewList = document.getElementById("reviewList");
+    var newRow = document.createElement("tr");
+
+    var titleCell = document.createElement("td");
+    var contentCell = document.createElement("td");
+    var dateCell = document.createElement("td");
+
+    titleCell.innerText = title;
+    contentCell.innerText = content;
+    dateCell.innerText = date;
+
+    newRow.appendChild(titleCell);
+    newRow.appendChild(contentCell);
+    newRow.appendChild(dateCell);
+
+    reviewList.appendChild(newRow);
+}
+
+// review-modal.js
+
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("openModalBtn");
+
+// Get the close button
+var closeBtn = document.getElementById("closeModalBtn");
+
+// Get the submit button
+var submitBtn = document.getElementById("submitReview");
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on close button, close the modal
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Add event listener for the submit button
+submitBtn.onclick = function() {
+    var title = document.getElementById("title").value;
+    var content = document.getElementById("content").value;
+    var date = new Date().toLocaleString();
+
+    // Add the review to the list
+    addReview(title, content, date);
+
+    // Clear the modal inputs
+    document.getElementById("title").value = '';
+    document.getElementById("content").value = '';
+
+    // Close the modal
+    modal.style.display = "none";
+}

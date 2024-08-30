@@ -145,13 +145,4 @@ footer .footer-link {
     text-decoration: none; /* 기본 밑줄 제거 */
 }
 
-footer .list-inline {
-    display: flex;
-    justify-content: center; /* 링크들을 정중앙에 배치 */
-    padding-bottom: 10px; /* 상단 텍스트와 여백 추가 */
-}
-
-footer .list-inline-item {
-    margin: 0 10px; /* 리스트 아이템 간의 간격 조정 */
-}
 
