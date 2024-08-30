@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운동영상 리뷰</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>운동영상 리뷰</h2>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="review-section">
+        <button id="openModalBtn">리뷰 작성</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>날짜</th>
+                </tr>
+            </thead>
+            <tbody id="reviewList">
+                <!-- Reviews will be inserted here dynamically -->
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <button>&laquo;</button>
+            <button>1</button>
+            <button>&raquo;</button>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>운동영상 리뷰</h2>
+    </div>
+    <div class="modal-body">
+      <label for="title">제목</label>
+      <input type="text" id="title" name="title">
+
+      <label for="content">내용</label>
+      <textarea id="content" name="content" rows="4"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="submit-btn" id="submitReview">등록</button>
+      <button class="cancel-btn" id="closeModalBtn">취소</button>
+    </div>
+  </div>
+</div>
+
+<script src="review-list.js"></script>
+<script src="review-modal.js"></script>
+</body>
+</html>
