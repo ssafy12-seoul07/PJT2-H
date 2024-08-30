@@ -36,12 +36,6 @@ h2 {
 
 .btn-outline-light {
     border-radius: 20px; /* 검색 버튼의 둥근 모서리 */
-    border-color: #ffffff;
-}
-
-/* 운동 부위 선택 드롭다운과 추천 영상 사이의 여백 추가 */
-#part-videos {
-    margin-top: 20px; /* 추천 영상 위에 20px의 여백 추가 */
 }
 
 /* Card Styles */
@@ -72,6 +66,15 @@ h2 {
 .card-text {
     font-size: 0.8rem;
     color: #555;
+}
+
+.card a {
+    text-decoration: none;
+}
+
+/* 추가: 마우스 오버 시에도 밑줄이 생기지 않도록 설정 */
+.card a:hover {
+    text-decoration: none;
 }
 
 /* 시간 표시 */
