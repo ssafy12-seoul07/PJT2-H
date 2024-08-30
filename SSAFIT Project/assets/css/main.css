@@ -1,0 +1,102 @@
+/* main.css */
+
+/* Custom styles for SSAFIT */
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Headings */
+h2 {
+    color: #333;
+}
+
+/* Navbar */
+.custom-navbar {
+    background-color: #6BAED6; /* 네비게이션 바의 배경색 */
+}
+
+.navbar-brand, .nav-link, .dropdown-toggle {
+    color: #ffffff !important; /* 텍스트를 흰색으로 설정 */
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.5); /* 토글 버튼 테두리 색상 */
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    /* 토글 버튼 아이콘을 흰색으로 변경 */
+}
+
+.form-control {
+    border-radius: 20px; /* 검색 창의 둥근 모서리 */
+}
+
+.btn-outline-light {
+    border-radius: 20px; /* 검색 버튼의 둥근 모서리 */
+    border-color: #ffffff;
+}
+
+.dropdown-menu {
+    min-width: 150px; /* 드롭다운 메뉴의 최소 너비 */
+}
+
+.dropdown-menu a {
+    color: #000000 !important; /* 드롭다운 메뉴 아이템의 색상 */
+}
+
+/* Card Styles */
+/* 스타일 추가 */
+.card {
+    position: relative;
+    border: none;
+    overflow: hidden;
+    background-color: transparent;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.card img:hover {
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #000;
+    margin-top: 0.5rem;
+}
+
+.card-text {
+    font-size: 0.8rem;
+    color: #555;
+}
+
+/* 시간 표시 */
+.card .duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+}
+
+
+/* Footer */
+.footer {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+}
+
+.footer p {
+    margin: 0;
+}

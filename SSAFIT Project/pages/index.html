@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSAFIT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">SSAFIT</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">메인페이지</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">최근 재생 목록</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">찜목록</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">헬스장 찾기</a>
+                    </li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://via.placeholder.com/30" alt="Profile" class="rounded-circle me-1"> 김싸피님
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#">프로필</a></li>
+                        <li><a class="dropdown-item" href="#">로그아웃</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mt-5 pt-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2>최근 가장 많이 본 영상</h2>
+                <!-- Carousel for Most Watched Videos -->
+                <div id="mostWatchedCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="carouselItems">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+
+                    <!-- Controls -->
+                    <a class="carousel-control-prev" href="#mostWatchedCarousel" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#mostWatchedCarousel" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2>운동 부위 선택</h2>
+                <select class="form-select" id="partSelect" aria-label="운동 부위 선택">
+                    <option value="전신" selected>전신</option>
+                    <option value="상체">상체</option>
+                    <option value="하체">하체</option>
+                    <option value="복부">복부</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row" id="recommendedVideos">
+            <div class="col-12">
+                <h2>추천 영상</h2>
+                <div class="row" id="recommendedVideos">
+                    <!-- 추천 영상이 동적으로 표시될 영역 -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center text-lg-start mt-4">
+        <div class="text-center p-3">
+            &copy; 2024 SSAFIT. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // JSON 파일을 가져오기
+            fetch('../assets/data/videos.json')
+                .then(response => response.json())
+                .then(data => {
+                    // 최근 많이 본 영상 캐러셀 설정
+                    const carouselItems = document.getElementById('carouselItems');
+                    let isActive = true;
+                    for (let i = 0; i < data.length; i += 2) {
+                        const item = document.createElement('div');
+                        item.className = `carousel-item ${isActive ? 'active' : ''}`;
+                        isActive = false;
+
+                        const row = document.createElement('div');
+                        row.className = 'row';
+
+                        for (let j = i; j < i + 2 && j < data.length; j++) {
+                            const col = document.createElement('div');
+                            col.className = 'col-md-6';
+
+                            const card = document.createElement('div');
+                            card.className = 'card';
+
+                            const link = document.createElement('a');
+                            link.href = data[j].url;
+                            link.target = '_blank'; // 새로운 탭에서 열기
+                            
+                            const img = document.createElement('img');
+                            img.src = `https://img.youtube.com/vi/${data[j].id}/mqdefault.jpg`;  // 유튜브 썸네일 URL
+                            img.className = 'card-img-top';
+                            img.alt = data[j].title;
+
+                            link.appendChild(img);
+                            card.appendChild(link);
+
+                            col.appendChild(card);
+                            row.appendChild(col);
+                        }
+
+                        item.appendChild(row);
+                        carouselItems.appendChild(item);
+                    }
+
+                    // 운동 부위 선택에 따라 추천 영상을 필터링하여 표시
+                    const partSelect = document.getElementById('partSelect');
+                    const recommendedVideos = document.getElementById('recommendedVideos');
+
+                    function updateRecommendedVideos(part) {
+                        recommendedVideos.innerHTML = ''; // 기존 추천 영상 초기화
+
+                        const filteredVideos = data.filter(video => video.part === part);
+
+                        filteredVideos.forEach(video => {
+                            const col = document.createElement('div');
+                            col.className = 'col-md-3';
+
+                            const card = document.createElement('div');
+                            card.className = 'card';
+
+                            const link = document.createElement('a');
+                            link.href = video.url;
+                            link.target = '_blank'; // 새로운 탭에서 열기
+                            
+                            const img = document.createElement('img');
+                            img.src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`; // 유튜브 썸네일 URL
+                            img.className = 'card-img-top';
+                            img.alt = video.title;
+
+                            const cardBody = document.createElement('div');
+                            cardBody.className = 'card-body';
+
+                            const cardTitle = document.createElement('h5');
+                            cardTitle.className = 'card-title';
+                            cardTitle.textContent = video.title;
+
+                            const cardText = document.createElement('p');
+                            cardText.className = 'card-text';
+                            cardText.textContent = `${video.channelName} - ${video.part}`;
+
+                            cardBody.appendChild(cardTitle);
+                            cardBody.appendChild(cardText);
+
+                            link.appendChild(img);
+                            card.appendChild(link);
+                            card.appendChild(cardBody);
+
+                            col.appendChild(card);
+                            recommendedVideos.appendChild(col);
+                        });
+                    }
+
+                    // 페이지 로드 시 기본 "전신" 선택에 따른 추천 영상 업데이트
+                    updateRecommendedVideos('전신');
+
+                    partSelect.addEventListener('change', function() {
+                        const selectedPart = partSelect.value;
+                        updateRecommendedVideos(selectedPart);
+                    });
+                })
+                .catch(error => console.error('Error loading JSON:', error));
+        });
+    </script>
+</body>
+</html>
