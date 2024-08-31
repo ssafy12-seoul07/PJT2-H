@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     card.className = 'card';
 
                     const link = document.createElement('a');
-                    link.href = "../pages/add_review.html";
+                    link.href = `../pages/add_review.html?videoId=${data[j].id}&videoTitle=${encodeURIComponent(data[j].title)}&channelName=${encodeURIComponent(data[j].channelName)}`;
                     link.target = '_blank'; // 새로운 탭에서 열기
                     
                     const img = document.createElement('img');

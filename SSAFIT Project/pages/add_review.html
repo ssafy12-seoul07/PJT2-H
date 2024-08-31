@@ -15,13 +15,10 @@
 
     <div class="video-container">
         <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
-        <select id="videoSelect">
-            <!-- 비디오 옵션이 여기서 동적으로 채워집니다 -->
-        </select>
     </div>
 
     <div class="review-section">
-        <button id="openModalBtn"class="btn">리뷰 작성</button>
+        <button id="openModalBtn" class="btn">리뷰 작성</button>
         <a href="review_management.html" class="btn">리뷰 관리</a>
 
         <table>
@@ -48,151 +45,94 @@
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>리뷰 작성</h2>
-    </div>
-    <div class="modal-body">
-      <label for="title">제목</label>
-      <input type="text" id="title" name="title">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>리뷰 작성</h2>
+        </div>
+        <div class="modal-body">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title">
 
-      <label for="content">내용</label>
-      <textarea id="content" name="content" rows="4"></textarea>
+            <label for="content">내용</label>
+            <textarea id="content" name="content" rows="4"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="submit-btn" id="submitReview">등록</button>
+            <button class="cancel-btn" id="closeModalBtn">취소</button>
+        </div>
     </div>
-    <div class="modal-footer">
-      <button class="submit-btn" id="submitReview">등록</button>
-      <button class="cancel-btn" id="closeModalBtn">취소</button>
-    </div>
-  </div>
 </div>
 
 <script>
-// 서버에서 리뷰 데이터를 가져와서 테이블에 추가하는 함수
-async function loadReviews() {
-    try {
-        const response = await fetch('/reviews');
-        const reviews = await response.json();
-        const reviewList = document.getElementById('reviewList');
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoId = urlParams.get('videoId');
+    const videoTitle = urlParams.get('videoTitle');
+    const channelName = urlParams.get('channelName');
 
-        reviews.forEach(review => {
+    if (videoId) {
+        document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${videoId}`;
+    }
+
+    if (videoTitle) {
+        document.getElementById('videoTitle').textContent = decodeURIComponent(videoTitle);
+        document.getElementById('pageTitle').textContent = decodeURIComponent(videoTitle);
+    }
+
+    if (channelName) {
+        const channelElement = document.createElement('p');
+        channelElement.textContent = `채널: ${decodeURIComponent(channelName)}`;
+        document.querySelector('.video-container').appendChild(channelElement);
+    }
+
+    // 모달 열기
+    document.getElementById('openModalBtn').onclick = function() {
+        document.getElementById('myModal').style.display = 'block';
+    };
+
+    // 모달 닫기 (취소 버튼 클릭 시)
+    document.getElementById('closeModalBtn').onclick = function() {
+        document.getElementById('myModal').style.display = 'none';
+    };
+
+    // 모달 외부 클릭 시 닫기
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('myModal')) {
+            document.getElementById('myModal').style.display = 'none';
+        }
+    };
+
+    // 리뷰 저장 버튼 클릭 시 동작
+    document.getElementById('submitReview').onclick = function() {
+        // 입력된 제목과 내용 가져오기
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+        const date = new Date().toLocaleString();
+
+        if (title && content) { // 제목과 내용이 비어 있지 않은지 확인
+            // 새로운 리뷰를 테이블에 추가
+            const reviewList = document.getElementById('reviewList');
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${review.title}</td>
-                <td>${review.content}</td>
-                <td>${review.date}</td>
-                <td>${review.videoTitle}</td>
+                <td>${title}</td>
+                <td>${content}</td>
+                <td>${date}</td>
+                <td>${videoTitle}</td>
             `;
             reviewList.appendChild(row);
-        });
-    } catch (error) {
-        console.error('리뷰를 불러오는 중 오류가 발생했습니다:', error);
-    }
-}
 
-// 리뷰를 서버에 저장하는 함수
-async function saveReview(review) {
-    try {
-        const response = await fetch('/reviews', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(review)
-        });
+            // 입력 필드 초기화
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
 
-        if (response.ok) {
-            console.log('리뷰가 성공적으로 저장되었습니다.');
+            // 모달 닫기
+            document.getElementById('myModal').style.display = 'none';
         } else {
-            console.error('리뷰 저장에 실패했습니다.');
+            alert("제목과 내용을 모두 입력해주세요."); // 필드가 비어있을 경우 경고 메시지
         }
-    } catch (error) {
-        console.error('리뷰 저장 중 오류가 발생했습니다:', error);
-    }
-}
+    };
+});
 
-// 비디오 선택 박스를 채우는 함수
-async function loadVideos() {
-    try {
-        const response = await fetch('/video.json');
-        const videos = await response.json();
-        const videoSelect = document.getElementById('videoSelect');
-        const videoTitle = document.getElementById('videoTitle');
-        const pageTitle = document.getElementById('pageTitle');
-        const videoPlayer = document.getElementById('videoPlayer');
-
-        videos.forEach(video => {
-            const option = document.createElement('option');
-            option.value = video.url;
-            option.text = video.title;
-            videoSelect.appendChild(option);
-        });
-
-        videoSelect.onchange = function() {
-            const selectedTitle = this.options[this.selectedIndex].text;
-            videoPlayer.src = this.value;
-            videoTitle.textContent = selectedTitle;
-            pageTitle.textContent = selectedTitle;
-        };
-
-        // 첫 번째 비디오를 기본으로 설정
-        videoSelect.selectedIndex = 0;
-        videoSelect.onchange();
-    } catch (error) {
-        console.error('비디오 목록을 불러오는 중 오류가 발생했습니다:', error);
-    }
-}
-
-document.getElementById('submitReview').onclick = async function() {
-    const title = document.getElementById('title').value;
-    const content = document.getElementById('content').value;
-    const date = new Date().toLocaleString();
-    const videoTitle = document.getElementById('videoSelect').selectedOptions[0].text;
-
-    const newReview = { title, content, date, videoTitle };
-
-    // 서버에 리뷰 저장
-    await saveReview(newReview);
-
-    // 새 리뷰를 테이블에 추가
-    const reviewList = document.getElementById('reviewList');
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${title}</td>
-        <td>${content}</td>
-        <td>${date}</td>
-        <td>${videoTitle}</td>
-    `;
-    reviewList.appendChild(row);
-
-    // 입력 필드 초기화
-    document.getElementById('title').value = '';
-    document.getElementById('content').value = '';
-
-    // 모달 닫기
-    document.getElementById('myModal').style.display = 'none';
-};
-
-document.getElementById('closeModalBtn').onclick = function() {
-    document.getElementById('myModal').style.display = 'none';
-};
-
-// 페이지 로드 시 기존 리뷰와 비디오 목록을 서버에서 가져옴
-window.onload = function() {
-    loadReviews();
-    loadVideos();
-};
-
-// 모달 외부 클릭 시 모달 닫기
-window.onclick = function(event) {
-    if (event.target == document.getElementById('myModal')) {
-        document.getElementById('myModal').style.display = 'none';
-    }
-};
-
-// 모달 열기
-document.getElementById('openModalBtn').onclick = function() {
-    document.getElementById('myModal').style.display = 'block';
-};
 </script>
 
 </body>
