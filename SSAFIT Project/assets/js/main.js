@@ -90,3 +90,115 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error loading video data:', error));
 });
+
+// login.html Login form 처리
+// 로그인 폼 제출 이벤트 리스너
+document.addEventListener('DOMContentLoaded', function() {
+    //페이지 구분
+    const bodyId = document.body.id;
+
+    if(bodyId == 'login-page'){
+        const loginForm = document.getElementById('login-form');
+
+            if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked; // '아이디 저장' 체크 여부
+
+                if (email && password) {
+                    const username = email.split('@')[0];
+                    const profileImageUrl = `../assets/img/${username}-profile.jpg`;
+
+                    // localStorage에 사용자 정보 저장
+                    localStorage.setItem('username', username);
+                    console.log(username);
+                    localStorage.setItem('profileImageUrl', profileImageUrl);
+                    console.log(profileImageUrl);
+
+                    // '아이디 저장' 체크 시, 이메일 저장
+                    if (remember) {
+                        localStorage.setItem('email', email);
+                    } else {
+                        localStorage.removeItem('email');
+                    }
+
+                    // 페이지 이동
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 500);
+                } else {
+                    alert('아이디와 비밀번호를 입력하세요.');
+                }
+            });
+        } else {
+            console.error('Login form not found.');
+        }
+    }
+});
+
+// index.html 로드 시 사용자 정보 불러오기
+window.onload = function() {
+    const username = localStorage.getItem('username');
+    const profileImageUrl = localStorage.getItem('profileImageUrl');
+
+    if (username && profileImageUrl) {
+        document.getElementById('username-display').textContent = `${username}님`;
+        document.getElementById('profile-img').src = profileImageUrl;
+    } else {
+        document.getElementById('username-display').textContent = '로그인';
+        document.getElementById('profile-img').src = '../assets/img/default-profile.jpg';
+    }
+};
+
+
+// 로그아웃 버튼 클릭 이벤트 리스너
+document.getElementById('logout-btn').addEventListener('click', function() {
+    // localStorage에서 사용자 정보 삭제
+    localStorage.removeItem('username');
+    localStorage.removeItem('profileImageUrl');
+
+    // 로그인 페이지로 이동
+    window.location.href = 'index.html';
+});
+
+// 로그인 페이지 로드 시 '아이디 저장' 처리
+window.onload = function() {
+    const savedEmail = localStorage.getItem('email');
+    if (savedEmail) {
+        document.getElementById('email').value = savedEmail;
+        document.getElementById('remember').checked = true;
+    }
+};
+
+// join.html 회원가입 처리
+document.addEventListener('DOMContentLoaded', function() {
+    const bodyId = document.body.id;
+    if (bodyId == "join-page") {
+        const submitBtn = document.getElementById('submit-btn');
+
+        if (submitBtn) {
+            submitBtn.addEventListener('click', function() {
+                // 모든 필드 값 가져오기
+                const email = document.getElementById('email') ? document.getElementById('email').value : '';
+                const password = document.getElementById('password') ? document.getElementById('password').value : '';
+                const name = document.getElementById('name') ? document.getElementById('name').value : '';
+                const birthdate = document.getElementById('birthdate') ? document.getElementById('birthdate').value : '';
+                const phone = document.getElementById('phone') ? document.getElementById('phone').value : '';
+                const gender = document.querySelector('input[name="gender"]:checked') ? document.querySelector('input[name="gender"]:checked').value : null;
+
+                // 입력 필드 모두 체크
+                if (email === '' || password === '' || name === '' || birthdate === '' || phone === '' || !gender) {
+                    alert('입력 사항을 전부 기입해주세요');
+                } else {
+                    alert('회원 가입 성공');
+                }
+            });
+        } else {
+            console.error('Submit button not found.');
+        }
+    }
+});
+

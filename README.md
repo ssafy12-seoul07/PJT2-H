@@ -9,7 +9,7 @@
 - [사용된 기술](#사용된-기술)
 
 ## 프로젝트 소개
-SSAFIT PROJECT는 사용자들이 다양한 운동 영상을 보고 리뷰를 작성할 수 있는 웹 애플리케이션입니다. 이 프로젝트는 부트스트랩을 사용하여 반응형 웹 디자인을 구현했으며, JavaScript로 동적 콘텐츠를 관리합니다.
+[SSAFIT PROJECT](https://www.figma.com/proto/l0ApYVXBMaqZRldAEQiGId/Seoul07_FrontPJT?node-id=0-1&t=iUEjsBENKn34Aa8s-1)는 사용자들이 다양한 운동 영상을 보고 리뷰를 작성할 수 있는 웹 애플리케이션입니다. 이 프로젝트는 부트스트랩을 사용하여 반응형 웹 디자인을 구현했으며, JavaScript로 동적 콘텐츠를 관리합니다.
 
 ## 팀원 및 역할
 - **팀장**: [권희주]
