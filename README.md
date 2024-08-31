@@ -44,7 +44,8 @@ SSAFIT_PROJECT/
 │   ├── data/
 │   │   └── videos.json
 │   ├── img/
-│   │   └── piano.jpg
+│   │   └── default-profile.jpg
+│   │   └── ssafy-profile.jpg
 │   └── js/
 │       ├── main.js
 │       └── server.js
