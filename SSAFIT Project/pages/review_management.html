@@ -56,7 +56,79 @@
   </div>
 </div>
 
-<script src="../assets/js/server.js" defer></script>
+<script>
+  // 기존에 등록된 리뷰 데이터를 가져와서 테이블에 추가하는 코드
+const reviews = [
+    { title: "리뷰 1", content: "내용 1", date: "2024-08-30 12:00" },
+    { title: "리뷰 2", content: "내용 2", date: "2024-08-31 14:30" }
+];
+
+const reviewManagementList = document.getElementById('reviewManagementList');
+let currentEditingIndex = -1;
+
+function populateReviewTable() {
+    reviewManagementList.innerHTML = ''; // 기존 테이블 내용을 초기화
+
+    reviews.forEach((review, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${review.title}</td>
+            <td>${review.content}</td>
+            <td>${review.date}</td>
+            <td>
+                <button class="btn" onclick="editReview(${index})">수정</button>
+                <button class="btn" onclick="deleteReview(${index})">삭제</button>
+            </td>
+        `;
+        reviewManagementList.appendChild(row);
+    });
+}
+
+function editReview(index) {
+    currentEditingIndex = index;
+
+    // 모달을 통해 리뷰 수정
+    document.getElementById('editTitle').value = reviews[index].title;
+    document.getElementById('editContent').value = reviews[index].content;
+
+    // 모달 열기
+    document.getElementById('editModal').style.display = 'block';
+}
+
+function deleteReview(index) {
+    // 리뷰 삭제 로직 구현
+    reviews.splice(index, 1);
+    populateReviewTable();
+}
+
+document.getElementById('saveChanges').onclick = function() {
+    if (currentEditingIndex > -1) {
+        reviews[currentEditingIndex].title = document.getElementById('editTitle').value;
+        reviews[currentEditingIndex].content = document.getElementById('editContent').value;
+
+        // 테이블 갱신
+        populateReviewTable();
+
+        // 모달 닫기
+        document.getElementById('editModal').style.display = 'none';
+    }
+};
+
+document.getElementById('closeEditModal').onclick = function() {
+    // 모달 닫기
+    document.getElementById('editModal').style.display = 'none';
+};
+
+// 모달 외부 클릭 시 닫기
+window.onclick = function(event) {
+    if (event.target == document.getElementById('editModal')) {
+        document.getElementById('editModal').style.display = 'none';
+    }
+};
+
+// 초기 테이블 채우기
+populateReviewTable();
+</script>
 
 </body>
 </html>
