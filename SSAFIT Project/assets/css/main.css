@@ -274,7 +274,7 @@ main.join .gender-group input[type="radio"]:checked + label {
 }
 
 /* 인증 요청 버튼 스타일 */
-main.join .submit-btn {
+main.join #submit-btn {
     width: 100%;
     padding: 0.75em;
     background-color: #1F1D2B;
@@ -285,6 +285,6 @@ main.join .submit-btn {
     cursor: pointer;
 }
 
-main.join .submit-btn:hover {
+main.join #submit-btn:hover {
     background-color: #929292;
 }

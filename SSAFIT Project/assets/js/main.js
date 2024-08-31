@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // login.html Login form 처리
-// 로그인 폼 제출 이벤트 리스너
+// 로그인 폼 이벤트 리스너
 document.addEventListener('DOMContentLoaded', function() {
     //페이지 구분
     const bodyId = document.body.id;
@@ -101,29 +101,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const loginForm = document.getElementById('login-form');
 
             if (loginForm) {
-            loginForm.addEventListener('submit', function(e) {
+                loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
-                const remember = document.getElementById('remember').checked; // '아이디 저장' 체크 여부
 
                 if (email && password) {
                     const username = email.split('@')[0];
-                    const profileImageUrl = `../assets/img/${username}-profile.jpg`;
+                    const userImageFile = `../assets/img/${username}-profile.jpg`;
 
                     // localStorage에 사용자 정보 저장
                     localStorage.setItem('username', username);
                     console.log(username);
-                    localStorage.setItem('profileImageUrl', profileImageUrl);
-                    console.log(profileImageUrl);
-
-                    // '아이디 저장' 체크 시, 이메일 저장
-                    if (remember) {
-                        localStorage.setItem('email', email);
-                    } else {
-                        localStorage.removeItem('email');
-                    }
+                    localStorage.setItem('userImage', userImageFile);
+                    console.log(userImageFile);
 
                     // 페이지 이동
                     setTimeout(() => {
@@ -139,39 +131,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// index.html 로드 시 사용자 정보 불러오기
+// 페이지 로드 시 저장된 이미지와 사용자 정보 불러오기
 window.onload = function() {
     const username = localStorage.getItem('username');
-    const profileImageUrl = localStorage.getItem('profileImageUrl');
+    const userImage = localStorage.getItem('userImage');
 
-    if (username && profileImageUrl) {
-        document.getElementById('username-display').textContent = `${username}님`;
-        document.getElementById('profile-img').src = profileImageUrl;
+    if (username) {
+        document.getElementById('username-display').textContent = username;
+    }
+
+    // 로컬 스토리지에서 이미지 데이터 불러오기
+    if (userImage) {
+        document.getElementById('profile-img').src = userImage;
     } else {
-        document.getElementById('username-display').textContent = '로그인';
         document.getElementById('profile-img').src = '../assets/img/default-profile.jpg';
     }
 };
 
-
-// 로그아웃 버튼 클릭 이벤트 리스너
-document.getElementById('logout-btn').addEventListener('click', function() {
-    // localStorage에서 사용자 정보 삭제
+// 로그아웃
+function logout(){
+    // 로컬스토리지에서 제거
     localStorage.removeItem('username');
-    localStorage.removeItem('profileImageUrl');
+    localStorage.removeItem('userImage');
 
-    // 로그인 페이지로 이동
-    window.location.href = 'index.html';
-});
-
-// 로그인 페이지 로드 시 '아이디 저장' 처리
-window.onload = function() {
-    const savedEmail = localStorage.getItem('email');
-    if (savedEmail) {
-        document.getElementById('email').value = savedEmail;
-        document.getElementById('remember').checked = true;
-    }
-};
+    // 페이지 새로 고침
+    location.reload();
+}
 
 // join.html 회원가입 처리
 document.addEventListener('DOMContentLoaded', function() {
@@ -194,7 +179,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert('입력 사항을 전부 기입해주세요');
                 } else {
                     alert('회원 가입 성공');
+                    // main으로 돌아가기
+                    window.location.href = 'index.html';
                 }
+                
             });
         } else {
             console.error('Submit button not found.');
